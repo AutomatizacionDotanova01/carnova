@@ -11,10 +11,26 @@
   ],
   "routes": [
     {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "/logo(.*)",
+      "dest": "/logo$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
   ],
   "installCommand": "npm ci",
-  "buildCommand": "node node_modules/react-scripts/bin/react-scripts.js build"
+  "buildCommand": "npm run build"
 }
