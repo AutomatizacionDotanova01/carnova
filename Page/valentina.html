@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentina Rojas B. - Dotaciones Nova</title>
+    <!-- IMPORTANTE: Cargar el archivo de configuración ANTES que el script principal -->
+    <script src="config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .main-container {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .card-container {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .card-container.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .entrance-animation {
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-3d {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-3d.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: rotateY(180deg);
+        }
+
+        .gear-icon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            color: #f59e0b;
+            animation: spin-slow 4s linear infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .shine-effect {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            animation: logoAppear 1s ease 0.3s both;
+        }
+
+        @keyframes logoAppear {
+            from {
+                opacity: 0;
+                transform: scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .logo-glow.outer {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.2));
+        }
+
+        .logo-glow.inner {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, rgba(252, 211, 77, 0.15), rgba(245, 158, 11, 0.15));
+            animation-delay: 0.3s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .person-info {
+            animation: slideUp 1s ease 0.5s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .person-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .person-role {
+            color: #d97706;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: #374151;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            color: #d97706;
+        }
+
+        .contact-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .action-button {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+        }
+
+        .whatsapp-btn {
+            background: #22c55e;
+        }
+
+        .whatsapp-btn:hover {
+            background: #16a34a;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .email-btn {
+            background: #f59e0b;
+        }
+
+        .email-btn:hover {
+            background: #d97706;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: float 3s infinite;
+        }
+
+        .particle1 {
+            top: 16px;
+            left: 16px;
+            background: #f59e0b;
+        }
+
+        .particle2 {
+            top: 32px;
+            right: 48px;
+            background: #9ca3af;
+            animation-delay: 0.3s;
+        }
+
+        .particle3 {
+            bottom: 64px;
+            left: 24px;
+            background: #fbbf24;
+            animation-delay: 0.7s;
+        }
+
+        @keyframes float {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Estilos para la cara trasera */
+        .back-content {
+            position: relative;
+            z-index: 10;
+            padding: 1.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .company-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .company-tagline {
+            color: #fbbf24;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .company-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .company-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .company-icon {
+            width: 20px;
+            height: 20px;
+            color: #fbbf24;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .company-text {
+            color: white;
+            font-size: 0.875rem;
+            text-align: left;
+        }
+
+        .services-section {
+            text-align: center;
+        }
+
+        .services-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-item {
+            text-align: center;
+        }
+
+        .service-icon {
+            width: 32px;
+            height: 32px;
+            color: #fbbf24;
+            margin: 0 auto 0.25rem;
+            animation: bounce 2s infinite;
+        }
+
+        .service-icon.delay {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .service-text {
+            font-size: 0.75rem;
+            color: #d1d5db;
+        }
+
+        .flip-instruction {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .back-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.05;
+        }
+
+        .pattern-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.2) 50%, transparent 100%);
+            transform: skewX(12deg);
+        }
+
+        .card-shadow {
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 12px;
+            background: rgba(156, 163, 175, 0.2);
+            border-radius: 50%;
+            filter: blur(12px);
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .instructions p:first-child {
+            color: #4b5563;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .instructions p:last-child {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .person-name {
+                font-size: 1.75rem;
+            }
+            
+            .logo-image {
+                width: 64px;
+                height: 64px;
+            }
+            
+            .logo-glow.outer {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-glow.inner {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .gear-icon {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .company-header h2 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="card-container" id="card-valentina">
+            <div class="card-3d" onclick="flipCard()">
+                <!-- Cara frontal -->
+                <div class="card-face card-front">
+                    <svg class="gear-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.98C19.47,12.66 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.02L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.65 15.48,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.52,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.02C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.66 4.57,12.98L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.52,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.48,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.98Z" />
+                    </svg>
+                    
+                    <div class="shine-effect"></div>
+                    
+                    <div class="card-content">
+                        <div class="person-info">
+                            <div class="logo-container">
+                                <div class="logo-glow outer"></div>
+                                <div class="logo-glow inner"></div>
+                                <!-- AQUÍ CAMBIA: Ahora el src se asigna dinámicamente desde JavaScript -->
+                                <img id="logoImage" alt="Dotaciones Nova Logo" class="logo-image">
+                            </div>
+                            
+                            <h1 class="person-name">Valentina Rojas B.</h1>
+                            <p class="person-role">Comercial</p>
+                            
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                    </svg>
+                                    <span class="contact-text">315 1742516</span>
+                                </div>
+                                <div class="contact-item">
+                                    <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="contact-text">ventas3@dotanova.com</span>
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <a href="https://wa.link/ow34oj" class="action-button whatsapp-btn" onclick="event.stopPropagation()" title="Contactar por WhatsApp">
+                                    <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+                                    </svg>
+                                </a>
+                                <a href="mailto:ventas3@dotanova.com?subject=Consulta%20Dotaciones%20Nova&body=¡Hola!%20Quiero%20brindar%20seguridad%20a%20mis%20trabajadores%20con%20Dotaciones%20Nova.%20¿Pueden%20ayudarme%20con%20una%20cotización?" class="action-button email-btn" onclick="event.stopPropagation()" title="Enviar Email">
+                                    <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="floating-particles particle1"></div>
+                    <div class="floating-particles particle2"></div>
+                    <div class="floating-particles particle3"></div>
+                </div>
+                
+                <!-- Cara trasera -->
+                <div class="card-face card-back">
+                    <div class="shine-effect"></div>
+                    
+                    <div class="back-content">
+                        <div class="company-header">
+                            <h2>DOTACIONES NOVA</h2>
+                            <p class="company-tagline">BRINDAMOS SEGURIDAD A SUS TRABAJADORES</p>
+                        </div>
+                        
+                        <div class="company-info">
+                            <div class="company-item">
+                                <svg class="company-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="company-text">Carrera 55A No.76-46<br>Bogotá • Colombia</span>
+                            </div>
+                            <div class="company-item">
+                                <svg class="company-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                                <span class="company-text">(601) 808 8957</span>
+                            </div>
+                            <div class="company-item">
+                                <svg class="company-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+                                </svg>
+                                <span class="company-text">www.dotanova.com</span>
+                            </div>
+                        </div>
+                        
+                        <div class="services-section">
+                            <div class="services-icons">
+                                <div class="service-item">
+                                    <svg class="service-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" fill="none"/>
+                                    </svg>
+                                    <p class="service-text">Protección</p>
+                                </div>
+                                <div class="service-item">
+                                    <svg class="service-icon delay" fill="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" fill="none"/>
+                                    </svg>
+                                    <p class="service-text">Calidad</p>
+                                </div>
+                            </div>
+                            
+                            <p class="flip-instruction">Toca para volver al frente</p>
+                        </div>
+                    </div>
+                    
+                    <div class="back-pattern">
+                        <div class="pattern-stripe"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-shadow"></div>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <p>Tarjeta Digital Interactiva</p>
+        <p>Dotaciones Nova - Seguridad Laboral</p>
+    </div>
+
+    <script>
+        // Estado del flip de la tarjeta
+        let isFlipped = false;
+
+        // Función para hacer flip a la tarjeta
+        function flipCard() {
+            const card = document.querySelector('.card-3d');
+            isFlipped = !isFlipped;
+            
+            if (isFlipped) {
+                card.classList.add('flipped');
+            } else {
+                card.classList.remove('flipped');
+            }
+        }
+
+        // Función de inicialización
+        function init() {
+            // CAMBIO IMPORTANTE: Cargar la imagen desde la configuración
+            loadLogoFromConfig();
+            
+            const cardContainer = document.getElementById('card-valentina');
+            cardContainer.classList.add('loaded');
+            
+            // Aplicar animación de entrada
+            setTimeout(() => {
+                cardContainer.classList.add('entrance-animation');
+            }, 100);
+        }
+
+        // NUEVA FUNCIÓN: Cargar logo desde configuración
+        function loadLogoFromConfig() {
+            // Verificar que la configuración esté disponible
+            if (typeof DotacionesNovaConfig !== 'undefined' && DotacionesNovaConfig.logoBase64) {
+                const logoImage = document.getElementById('logoImage');
+                logoImage.src = DotacionesNovaConfig.logoBase64;
+            } else {
+                console.error('Configuración no encontrada o logo no definido');
+                // Fallback: usar una imagen por defecto o mostrar mensaje
+                const logoImage = document.getElementById('logoImage');
+                logoImage.src = 'https://via.placeholder.com/80x80/f59e0b/ffffff?text=LOGO';
+                logoImage.alt = 'Logo no disponible';
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Prevenir que los enlaces abran el flip
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>
