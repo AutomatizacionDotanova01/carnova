@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dotaciones Nova - Brindamos Seguridad a sus Trabajadores</title>
+    <meta name="description" content="Dotaciones Nova SAS - Más de 10 años especializándose en dotaciones de seguridad laboral. Ropa de trabajo, calzado industrial, EPPs y más con cobertura nacional.">
+    
+    <!-- Cargar configuración externa -->
+    <script src="page/config.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #EEC939;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #EEC939;
+        }
+
+        .cta-button {
+            background: #EEC939;
+            color: #1f2937;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #D4B632;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #D4B632;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #374151;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #EEC939;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .btn-primary {
+            background: #EEC939;
+            color: #1f2937;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(238, 201, 57, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #D4B632;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(238, 201, 57, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #374151;
+            padding: 1rem 2rem;
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #EEC939;
+            color: #EEC939;
+        }
+
+        /* Floating Elements */
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(238, 201, 57, 0.1), rgba(212, 182, 50, 0.1));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape1 {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape3 {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 3rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            color: #EEC939;
+            animation: bounce 2s infinite;
+        }
+
+        .product-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .team-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #EEC939, #D4B632);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .team-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-card .role {
+            color: #D4B632;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .team-card .btn-team {
+            background: #EEC939;
+            color: #1f2937;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .team-card .btn-team:hover {
+            background: #D4B632;
+            transform: scale(1.05);
+        }
+
+        /* About Section */
+        .about {
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            color: #10b981;
+        }
+
+        .feature span {
+            font-size: 0.9rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .about-visual {
+            background: linear-gradient(135deg, #EEC939 0%, #D4B632 100%);
+            border-radius: 16px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1f2937;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #EEC939;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: #EEC939;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #374151;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo-container">
+                <img id="headerLogo" alt="Dotaciones Nova Logo" class="logo-image">
+                <span class="logo-text">DOTACIONES NOVA</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#equipo">Equipo</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            
+            <a href="mailto:ventas@dotanova.com?subject=Solicitud%20de%20Cotización&body=¡Hola!%20Necesito%20una%20cotización%20para%20dotaciones%20de%20seguridad%20laboral." class="cta-button">
+                Cotizar Ahora
+            </a>
+            
+            <button class="mobile-menu-toggle">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="floating-shape shape3"></div>
+        
+        <div class="hero-content">
+            <h1>Brindamos Seguridad a sus Trabajadores</h1>
+            <p class="hero-subtitle">Más de 10 años especializándose en dotaciones de seguridad laboral</p>
+            <p class="hero-description">
+                Somos una empresa consolidada con cobertura nacional, especializados en ropa de trabajo, 
+                calzado industrial, EPPs y elementos de protección para todas las industrias.
+            </p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">+10</span>
+                    <span class="stat-label">Años de experiencia</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">+1M</span>
+                    <span class="stat-label">Productos despachados</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Cobertura nacional</span>
+                </div>
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="#productos" class="btn-primary">Ver Productos</a>
+                <a href="#equipo" class="btn-secondary">Conocer Equipo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">Nuestros Productos</h2>
+            <p class="section-subtitle">Soluciones integrales para la seguridad laboral</p>
+            
+            <div class="products-grid">
+                <div class="product-card">
+                    <svg class="product-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                    </svg>
+                    <h3>Ropa de Trabajo</h3>
+                    <p>Uniformes administrativos y operativos, overoles, prendas antifluidos con diseño personalizado según manual de imagen corporativa.</p>
+                </div>
+                
+                <div class="product-card">
+                    <svg class="product-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M2,18H9V20H2V18M7,2V4H9V2H7M12.5,7C13.9,7 15,8.1 15,9.5V10.5C15,10.5 15,10.6 15,10.6L22,17.6L20.6,19L13.6,12C13.6,12 13.5,12 13.5,12H12.5C11.1,12 10,10.9 10,9.5C10,8.1 11.1,7 12.5,7M12.5,8.5A1,1 0 0,0 11.5,9.5A1,1 0 0,0 12.5,10.5A1,1 0 0,0 13.5,9.5A1,1 0 0,0 12.5,8.5Z"/>
+                    </svg>
+                    <h3>Calzado Industrial</h3>
+                    <p>Botas de seguridad en PVC y cuero, calzado para industria alimentaria con cumplimiento de normas de seguridad.</p>
+                </div>
+                
+                <div class="product-card">
+                    <svg class="product-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+                    </svg>
+                    <h3>EPPs</h3>
+                    <p>Elementos de Protección Personal certificados con asesoría especializada en uso, manejo y mantenimiento.</p>
+                </div>
+                
+                <div class="product-card">
+                    <svg class="product-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,2L16,6H13V13.85L19.53,17.61L21,15.03L22.5,20.5L17,21.96L18.53,19.35L12,15.58L5.47,19.35L7,21.96L1.5,20.5L3,15.03L4.47,17.61L11,13.85V6H8L12,2Z"/>
+                    </svg>
+                    <h3>Alturas</h3>
+                    <p>Arnés, eslinga, anclajes, línea de vida, trípodes y carabineros certificados con programa de supervisión.</p>
+                </div>
+                
+                <div class="product-card">
+                    <svg class="product-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                    </svg>
+                    <h3>Señalización</h3>
+                    <p>Elementos de señalización vial, control de tránsito, demarcación de trayectos y equipos contraincendios.</p>
+                </div>
+                
+                <div class="product-card">
+                    <svg class="product-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z"/>
+                    </svg>
+                    <h3>Bioseguridad</h3>
+                    <p>Equipos de emergencia y primeros auxilios, elementos de bioseguridad para diferentes sectores industriales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="equipo" class="team">
+        <div class="container">
+            <h2 class="section-title">Nuestro Equipo Comercial</h2>
+            <p class="section-subtitle">Profesionales especializados para atender sus necesidades</p>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">JC</div>
+                    <h3>Juan Camilo Gómez</h3>
+                    <p class="role">Comercial</p>
+                    <a href="juanCamilo.html" class="btn-team">Ver Tarjeta</a>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">VR</div>
+                    <h3>Valentina Rojas B.</h3>
+                    <p class="role">Comercial</p>
+                    <a href="valentina.html" class="btn-team">Ver Tarjeta</a>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">NB</div>
+                    <h3>Nury Beltrán</h3>
+                    <p class="role">Comercial</p>
+                    <a href="nury.html" class="btn-team">Ver Tarjeta</a>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">JP</div>
+                    <h3>Juan Pablo Prieto</h3>
+                    <p class="role">Comercial</p>
+                    <a href="juanPablo.html" class="btn-team">Ver Tarjeta</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="nosotros" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>¿Por qué elegir Dotaciones Nova?</h2>
+                    <p>
+                        Somos una empresa consolidada con más de 10 años de experiencia especializándose 
+                        en dotaciones de seguridad laboral. Hemos despachado más de 1 millón de productos 
+                        y entregado más de 700,000 prendas corporativas.
+                    </p>
+                    <p>
+                        Nuestros clientes incluyen entidades como ANI, IDU, INVIAS, EPM y EAAB, 
+                        lo que demuestra nuestra capacidad para atender proyectos de gran envergadura.
+                    </p>
+                    
+                    <div class="features-list">
+                        <div class="feature">
+                            <svg class="feature-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                            </svg>
+                            <span>Cobertura Nacional</span>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                            </svg>
+                            <span>Productos Certificados</span>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                            </svg>
+                            <span>Precios Competitivos</span>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                            </svg>
+                            <span>Asesoría Especializada</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-visual">
+                    <svg width="120" height="120" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Dotaciones Nova SAS</h3>
+                <p>Más de 10 años brindando seguridad a trabajadores en toda Colombia.</p>
+                <p>Fabricante mayorista especializado en dotaciones de seguridad laboral.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>📍 Carrera 55A No.76-46</p>
+                <p>📍 Bogotá - Colombia</p>
+                <p>📞 (601) 808 8957</p>
+                <p>✉️ ventas@dotanova.com</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Productos</h3>
+                <a href="#productos">Ropa de Trabajo</a>
+                <a href="#productos">Calzado Industrial</a>
+                <a href="#productos">EPPs</a>
+                <a href="#productos">Equipos de Alturas</a>
+                <a href="#productos">Señalización</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <a href="#productos">Productos</a>
+                <a href="#equipo">Equipo Comercial</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="mailto:ventas@dotanova.com">Cotizar</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Dotaciones Nova SAS. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cargar logo desde configuración
+        function loadLogos() {
+            if (typeof DotacionesNovaConfig !== 'undefined' && DotacionesNovaConfig.logoBase64) {
+                const headerLogo = document.getElementById('headerLogo');
+                if (headerLogo) {
+                    headerLogo.src = DotacionesNovaConfig.logoBase64;
+                }
+            } else {
+                console.error('Configuración no encontrada');
+                const headerLogo = document.getElementById('headerLogo');
+                if (headerLogo) {
+                    headerLogo.src = 'https://via.placeholder.com/50x50/EEC939/1f2937?text=DN';
+                }
+            }
+        }
+
+        // Smooth scrolling para enlaces internos
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Animaciones al hacer scroll
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observar elementos que necesitan animación
+            document.querySelectorAll('.product-card, .team-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLogos();
+            initSmoothScroll();
+            initScrollAnimations();
+        });
+
+        // Mobile menu toggle (funcionalidad básica)
+        document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>
