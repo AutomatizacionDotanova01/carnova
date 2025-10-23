@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nury Beltrán - Dotaciones Nova</title>
+    <title>Juan Camilo Gómez - Dotaciones Nova</title>
     <!-- IMPORTANTE: Cargar el archivo de configuración ANTES que el script principal -->
     <script src="config.js"></script>
     <style>
@@ -27,6 +27,9 @@
             position: relative;
             width: 100%;
             max-width: 560px;
+            /* FIX IPHONE: Agregar perspective al contenedor principal */
+            perspective: 2000px;
+            -webkit-perspective: 2000px;
         }
 
         .card-container {
@@ -61,11 +64,16 @@
             height: 400px;
             transition: transform 0.7s;
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             cursor: pointer;
+            /* FIX IPHONE: Forzar aceleración por hardware */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
         }
 
         .card-3d.flipped {
             transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
         }
 
         .card-face {
@@ -73,21 +81,32 @@
             inset: 0;
             width: 100%;
             height: 100%;
+            /* FIX IPHONE: Agregar prefijo webkit y forzar con translateZ */
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             border-radius: 24px;
             overflow: hidden;
+            /* FIX IPHONE: Forzar nueva capa de composición */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
         }
 
         .card-front {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             border: 1px solid #e5e7eb;
+            /* FIX IPHONE: Asegurar que esté en z-index correcto */
+            z-index: 2;
         }
 
         .card-back {
             background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+            /* FIX IPHONE: z-index menor para la parte trasera */
+            z-index: 1;
         }
 
         .gear-icon {
@@ -122,6 +141,9 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            /* FIX IPHONE: Agregar transform para forzar capa */
+            transform: translateZ(1px);
+            -webkit-transform: translateZ(1px);
         }
 
         .logo-container {
@@ -162,29 +184,126 @@
         .logo-glow.outer {
             width: 120px;
             height: 120px;
-            background: linear-gradient(45deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.2));
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
         }
 
         .logo-glow.inner {
             width: 100px;
             height: 100px;
-            background: linear-gradient(45deg, rgba(252, 211, 77, 0.15), rgba(245, 158, 11, 0.15));
-            animation-delay: 0.3s;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 70%);
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 0.4;
+            }
         }
 
-        .person-info {
-            animation: slideUp 1s ease 0.5s both;
+        .profile-info {
+            margin-bottom: 1.5rem;
         }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.025em;
+            animation: slideFromLeft 0.6s ease 0.5s both;
+        }
+
+        @keyframes slideFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .profile-role {
+            font-size: 0.95rem;
+            color: #f59e0b;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            animation: slideFromRight 0.6s ease 0.6s both;
+        }
+
+        @keyframes slideFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .profile-company {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.8125rem;
+            color: #9ca3af;
+            animation: fadeIn 0.6s ease 0.7s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .location-icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .contact-section {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 1rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease calc(0.8s + var(--delay)) both;
+        }
+
+        .contact-item:nth-child(1) { --delay: 0s; }
+        .contact-item:nth-child(2) { --delay: 0.1s; }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(16px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -192,184 +311,253 @@
             }
         }
 
-        .person-name {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 0.5rem;
-        }
-
-        .person-role {
-            color: #d97706;
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            color: #374151;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
+        .contact-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
         }
 
         .contact-icon {
             width: 20px;
             height: 20px;
-            color: #d97706;
+            color: #f59e0b;
+            flex-shrink: 0;
         }
 
         .contact-text {
-            font-size: 1rem;
+            font-size: 0.875rem;
+            color: #374151;
             font-weight: 500;
         }
 
         .action-buttons {
             display: flex;
+            gap: 1rem;
             justify-content: center;
-            gap: 1.5rem;
+            animation: scaleIn 0.6s ease 1.1s both;
+            /* FIX IPHONE: Forzar nueva capa de composición para los botones */
+            transform: translateZ(2px);
+            -webkit-transform: translateZ(2px);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .action-button {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-weight: 600;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-decoration: none;
+            /* FIX IPHONE: Propiedades críticas para evitar traspaso */
+            position: relative;
+            z-index: 100;
+            transform: translateZ(3px);
+            -webkit-transform: translateZ(3px);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        .action-button:hover {
+            transform: translateY(-4px) scale(1.05) translateZ(3px);
+            -webkit-transform: translateY(-4px) scale(1.05) translateZ(3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-button:active {
+            transform: translateY(-2px) scale(1.02) translateZ(3px);
+            -webkit-transform: translateY(-2px) scale(1.02) translateZ(3px);
         }
 
         .whatsapp-btn {
-            background: #22c55e;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
         }
 
         .whatsapp-btn:hover {
-            background: #16a34a;
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #20BA5A 0%, #0F7A6C 100%);
         }
 
         .email-btn {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #EA4335 0%, #C5221F 100%);
+            color: white;
         }
 
         .email-btn:hover {
-            background: #d97706;
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #D23F31 0%, #B01E1B 100%);
         }
+
         .linkedin-btn {
-            background: linear-gradient(135deg, #0077B5 0%, #00669c 100%);
+            background: linear-gradient(135deg, #0077B5 0%, #005E93 100%);
             color: white;
         }
 
         .linkedin-btn:hover {
-            background: linear-gradient(135deg, #005885 0%, #004471 100%);
+            background: linear-gradient(135deg, #006399 0%, #004D7A 100%);
+        }
 
         .floating-particles {
             position: absolute;
-            width: 4px;
-            height: 4px;
             border-radius: 50%;
-            animation: float 3s infinite;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         .particle1 {
-            top: 16px;
-            left: 16px;
+            width: 8px;
+            height: 8px;
             background: #f59e0b;
+            top: 20%;
+            left: 10%;
+            animation: float1 4s ease-in-out infinite;
         }
 
         .particle2 {
-            top: 32px;
-            right: 48px;
-            background: #9ca3af;
-            animation-delay: 0.3s;
+            width: 6px;
+            height: 6px;
+            background: #f97316;
+            top: 60%;
+            right: 15%;
+            animation: float2 5s ease-in-out infinite;
         }
 
         .particle3 {
-            bottom: 64px;
-            left: 24px;
-            background: #fbbf24;
-            animation-delay: 0.7s;
+            width: 10px;
+            height: 10px;
+            background: #fb923c;
+            bottom: 25%;
+            left: 20%;
+            animation: float3 6s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -15px); }
         }
 
-        /* Estilos para la cara trasera */
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-15px, 10px); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(12px, 8px); }
+        }
+
+        .card-shadow {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 30px;
+            background: radial-gradient(ellipse, rgba(0, 0, 0, 0.2) 0%, transparent 70%);
+            filter: blur(15px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
         .back-content {
             position: relative;
             z-index: 10;
-            padding: 1.5rem;
+            padding: 2rem;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            /* FIX IPHONE: Forzar capa para contenido trasero */
+            transform: translateZ(1px);
+            -webkit-transform: translateZ(1px);
+        }
+
+        .company-header {
             text-align: center;
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 0.8s ease both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .company-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #f59e0b;
             margin-bottom: 0.5rem;
-            line-height: 1.2;
+            letter-spacing: 0.05em;
         }
 
         .company-tagline {
-            color: #fbbf24;
             font-size: 0.875rem;
+            color: #d1d5db;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.5rem 0.75rem;
+            letter-spacing: 0.1em;
         }
 
         .company-info {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .company-item {
             display: flex;
             align-items: flex-start;
             gap: 0.75rem;
+            animation: slideInLeft 0.6s ease calc(0.3s + var(--delay)) both;
+        }
+
+        .company-item:nth-child(1) { --delay: 0s; }
+        .company-item:nth-child(2) { --delay: 0.1s; }
+        .company-item:nth-child(3) { --delay: 0.2s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .company-icon {
-            width: 20px;
-            height: 20px;
-            color: #fbbf24;
+            width: 24px;
+            height: 24px;
+            color: #f59e0b;
             flex-shrink: 0;
             margin-top: 2px;
         }
 
         .company-text {
-            color: white;
-            font-size: 0.875rem;
-            text-align: left;
+            font-size: 0.9375rem;
+            color: #e5e7eb;
+            line-height: 1.5;
         }
 
         .services-section {
@@ -380,154 +568,206 @@
             display: flex;
             justify-content: center;
             gap: 2.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .service-item {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounceIn 0.8s ease both;
+        }
+
+        .service-item:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+
+        .service-item:nth-child(2) {
+            animation-delay: 0.7s;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .service-icon {
-            width: 32px;
-            height: 32px;
-            color: #fbbf24;
-            margin: 0 auto 0.25rem;
-            animation: bounce 2s infinite;
-        }
-
-        .service-icon.delay {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            width: 48px;
+            height: 48px;
+            color: #f59e0b;
+            filter: drop-shadow(0 4px 8px rgba(245, 158, 11, 0.3));
         }
 
         .service-text {
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             color: #d1d5db;
+            font-weight: 600;
         }
 
         .flip-instruction {
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             color: #9ca3af;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 0.5rem 0.75rem;
+            font-style: italic;
+            animation: pulse-opacity 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-opacity {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
         .back-pattern {
             position: absolute;
             inset: 0;
-            opacity: 0.05;
+            pointer-events: none;
+            overflow: hidden;
         }
 
         .pattern-stripe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.2) 50%, transparent 100%);
-            transform: skewX(12deg);
+            top: -50%;
+            right: -20%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(245, 158, 11, 0.03) 20px,
+                rgba(245, 158, 11, 0.03) 40px
+            );
+            animation: rotate-pattern 30s linear infinite;
         }
 
-        .card-shadow {
-            position: absolute;
-            bottom: -24px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            height: 12px;
-            background: rgba(156, 163, 175, 0.2);
-            border-radius: 50%;
-            filter: blur(12px);
+        @keyframes rotate-pattern {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .instructions {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
             text-align: center;
-            padding: 0 1rem;
+            margin-top: 2rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+            animation: fadeIn 1.5s ease 1.5s both;
         }
 
         .instructions p:first-child {
-            color: #4b5563;
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
-        .instructions p:last-child {
-            color: #6b7280;
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-        }
-
-        /* Responsive */
+        /* Media Queries */
         @media (max-width: 640px) {
-            .person-name {
-                font-size: 1.75rem;
+            .card-3d {
+                height: 420px;
             }
-            
-            .logo-image {
-                width: 64px;
-                height: 64px;
+
+            .profile-name {
+                font-size: 1.375rem;
             }
-            
-            .logo-glow.outer {
-                width: 100px;
-                height: 100px;
+
+            .action-button {
+                width: 52px;
+                height: 52px;
             }
-            
-            .logo-glow.inner {
-                width: 80px;
-                height: 80px;
+
+            .action-button svg {
+                width: 28px;
+                height: 28px;
             }
-            
-            .gear-icon {
-                width: 32px;
-                height: 32px;
+        }
+
+        @media (max-width: 480px) {
+            .card-3d {
+                height: 440px;
             }
-            
+
+            .card-content {
+                padding: 1.5rem;
+            }
+
+            .back-content {
+                padding: 1.5rem;
+            }
+
+            .action-buttons {
+                gap: 0.75rem;
+            }
+
+            .action-button {
+                width: 48px;
+                height: 48px;
+            }
+
+            .action-button svg {
+                width: 26px;
+                height: 26px;
+            }
+
             .company-header h2 {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
+            }
+
+            .services-icons {
+                gap: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="main-container">
-        <div class="card-container" id="card-nury">
+        <div class="card-container" id="card-juan">
             <div class="card-3d" onclick="flipCard()">
                 <!-- Cara frontal -->
                 <div class="card-face card-front">
-                    <svg class="gear-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.98C19.47,12.66 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.02L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.65 15.48,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.52,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.02C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.66 4.57,12.98L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.52,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.48,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.98Z" />
+                    <svg class="gear-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                     
                     <div class="shine-effect"></div>
                     
                     <div class="card-content">
-                        <div class="person-info">
-                            <div class="logo-container">
-                                <div class="logo-glow outer"></div>
-                                <div class="logo-glow inner"></div>
-                                <!-- AQUÍ CAMBIA: Ahora el src se asigna dinámicamente desde JavaScript -->
-                                <img id="logoImage" alt="Dotaciones Nova Logo" class="logo-image">
-                            </div>
-                            
-                            <h1 class="person-name">Nury Beltrán</h1>
-                            <p class="person-role">Comercial</p>
-                            
-                            <div class="contact-info">
+                        <div class="logo-container">
+                            <div class="logo-glow outer"></div>
+                            <div class="logo-glow inner"></div>
+                            <img id="logoImage" src="" alt="Logo Dotaciones Nova" class="logo-image">
+                        </div>
+                        
+                        <div class="profile-info">
+                            <h1 class="profile-name">Nury Beltrán</h1>
+                            <p class="profile-role">COMERCIAL</p>
+                            <p class="profile-company">Dotaciones Nova</p>
+                            <p class="profile-location">
+                                <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                Bogotá, Colombia
+                            </p>
+                        </div>
+                        
+                        <div class="contact-section">
+                            <div class="contact-details">
                                 <div class="contact-item">
                                     <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                                     </svg>
-                                    <span class="contact-text">311 518 6837</span>
+                                    <span class="contact-text">311 5186837</span>
                                 </div>
                                 <div class="contact-item">
                                     <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -554,6 +794,7 @@
                                     </svg>
                                 </a>
                             </div>
+                       
                         </div>
                     </div>
                     
@@ -623,10 +864,7 @@
         </div>
     </div>
     
-    <div class="instructions">
-        <p>Tarjeta Digital Interactiva</p>
-        <p>Dotaciones Nova - Seguridad Laboral</p>
-    </div>
+
 
     <script>
         // Estado del flip de la tarjeta
@@ -649,7 +887,7 @@
             // CAMBIO IMPORTANTE: Cargar la imagen desde la configuración
             loadLogoFromConfig();
             
-            const cardContainer = document.getElementById('card-nury');
+            const cardContainer = document.getElementById('card-juan');
             cardContainer.classList.add('loaded');
             
             // Aplicar animación de entrada
